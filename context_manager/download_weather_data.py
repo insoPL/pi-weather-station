@@ -1,7 +1,6 @@
 import logging
 
 import requests
-from unidecode import unidecode
 
 
 def download_weather_data(config):
@@ -19,8 +18,8 @@ def download_weather_data(config):
         wind = str(j['wind']['speed'])
         temp = str(int(j['main']['temp']))
     except requests.exceptions.RequestException:
-        logging.warn("Cant reach weather service")
-        wind = "N/A"
-        temp = "N/A"
+        logging.warning("Can't reach weather service")
+        wind = ""
+        temp = ""
     finally:
         return wind, temp

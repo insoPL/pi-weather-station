@@ -9,9 +9,9 @@ from .text_line import TextLine
 class LcdManager:
     def __init__(self, config):
         config = config['lcd_manager']
-
-        GPIO.setup(11, GPIO.OUT)
-        GPIO.output(11, GPIO.HIGH)
+        self.dimmer_pin = int(config['dimmer_pin'])
+        GPIO.setup(self.dimmer_pin, GPIO.OUT)
+        self.turn_on_backlight()
 
         self.lcd_width = int(config['width'])
 
@@ -32,7 +32,14 @@ class LcdManager:
             TextLine('', self.lcd_width)
         ]
 
+    def turn_on_backlight(self):
+        GPIO.output(self.dimmer_pin, GPIO.HIGH)
+
+    def turn_off_backlight(self):
+        GPIO.output(self.dimmer_pin, GPIO.LOW)
+
     def close(self):
+        self.turn_off_backlight()
         self.lcd.close(clear=True)
 
     def set_lines(self, line, line2):
